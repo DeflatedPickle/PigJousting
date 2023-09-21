@@ -37,11 +37,11 @@ public abstract class MixinPigEntity extends MobEntity {
    * @reason
    */
   @Overwrite
-  public static DefaultAttributeContainer.Builder createPigAttributes() {
-    return MobEntity.createMobAttributes()
+  public static DefaultAttributeContainer.Builder createAttributes() {
+    return MobEntity.createAttributes()
         .add(EntityAttributes.GENERIC_MAX_HEALTH, 10.0)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 1.0);
+        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 0.4);
   }
 
   @Override
@@ -55,7 +55,7 @@ public abstract class MixinPigEntity extends MobEntity {
       player.giveItemStack(stack.copy());
       stack.decrement(1);
 
-      return ActionResult.success(world.isClient());
+      return ActionResult.success(getWorld().isClient());
     } else if (this.getMainHandStack().isEmpty()) {
       ItemStack stack = player.getMainHandStack();
 
@@ -64,7 +64,7 @@ public abstract class MixinPigEntity extends MobEntity {
         stack.decrement(1);
       }
 
-      return ActionResult.success(world.isClient());
+      return ActionResult.success(getWorld().isClient());
     }
 
     return super.interactAt(player, hitPos, hand);
@@ -78,7 +78,7 @@ public abstract class MixinPigEntity extends MobEntity {
         this.hasVehicle() && !Objects.requireNonNull(this.getVehicle()).isRemoved()
             ? this.getBoundingBox().union(this.getVehicle().getBoundingBox()).expand(1.0, 0.0, 1.0)
             : this.getBoundingBox().expand(0.5, 0.5, 0.5);
-    List<Entity> list = this.world.getOtherEntities(this, box);
+    List<Entity> list = this.getWorld().getOtherEntities(this, box);
     for (Entity entity : list) {
       if (entity.isRemoved() || !(entity instanceof LivingEntity)) continue;
       this.collideWithEntity(entity);

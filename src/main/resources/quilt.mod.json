@@ -10,6 +10,7 @@
                 "homepage": "${site}"
             },
             "name": "${name}",
+            "icon": "assets/${id}/icon.png",
             "description": "${desc}",
             "contributors": {"${author}": "Owner"}
         },
@@ -31,7 +32,6 @@
                 "id": "fabric-language-kotlin"
             }
         ],
-        "icon": "assets/${id}/icon.png",
         "intermediate_mappings": "net.fabricmc:intermediary",
         "entrypoints": {"init": [{
             "adapter": "kotlin",

@@ -9,12 +9,12 @@ import net.minecraft.client.render.entity.EntityRendererFactory
 import net.minecraft.client.render.entity.LivingEntityRenderer
 import net.minecraft.client.render.entity.feature.FeatureRenderer
 import net.minecraft.client.render.entity.model.EntityModel
-import net.minecraft.client.render.model.json.ModelTransformation.Mode.FIXED
+import net.minecraft.client.render.model.json.ModelTransformationMode
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.SwordItem
 import net.minecraft.util.Hand.MAIN_HAND
-import net.minecraft.util.math.Vec3f
+import net.minecraft.util.math.Axis
 
 class AnimalSwordFeatureRenderer<T : LivingEntity, M : EntityModel<T>>(
     context: EntityRendererFactory.Context,
@@ -37,15 +37,15 @@ class AnimalSwordFeatureRenderer<T : LivingEntity, M : EntityModel<T>>(
         if (stack.item is SwordItem) {
             matrices.push()
             matrices.translate(0.35, 0.8, -0.5)
-            matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(90f))
-            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(55f))
+            matrices.multiply(Axis.Y_NEGATIVE.rotationDegrees(90f))
+            matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(55f))
 
             MinecraftClient.getInstance()
                 .itemRenderer
                 .renderItem(
                     entity,
                     stack,
-                    FIXED,
+                    ModelTransformationMode.FIXED,
                     false,
                     matrices,
                     vertexConsumers,

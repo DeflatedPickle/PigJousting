@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@SuppressWarnings("UnusedMixin")
 @Mixin(PigEntityRenderer.class)
 public abstract class MixinPigRenderer
     extends MobEntityRenderer<PigEntity, PigEntityModel<PigEntity>> {
@@ -22,6 +23,6 @@ public abstract class MixinPigRenderer
 
   @Inject(method = "<init>", at = @At("TAIL"))
   public void init(Context context, CallbackInfo ci) {
-    addFeature(new AnimalSwordFeatureRenderer(context, this));
+    addFeature(new AnimalSwordFeatureRenderer<>(context, this));
   }
 }
