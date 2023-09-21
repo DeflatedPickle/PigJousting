@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -22,6 +23,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Unique;
 
 @SuppressWarnings("UnusedMixin")
 @Mixin(PigEntity.class)
@@ -83,10 +85,20 @@ public abstract class MixinPigEntity extends MobEntity {
     }
   }
 
+  @Unique
   private void collideWithEntity(Entity entity) {
     Item item = this.getMainHandStack().getItem();
     if (item instanceof SwordItem && entity.isAttackable() && entity instanceof MobEntity mob) {
-      mob.tryAttack(entity);
+      this.tryAttack(mob);
+    }
+  }
+
+  @Override
+  protected float getDropChance(EquipmentSlot slot) {
+    if (slot.getType() == EquipmentSlot.Type.HAND) {
+      return 1f;
+    } else {
+      return super.getDropChance(slot);
     }
   }
 }
